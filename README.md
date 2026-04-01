@@ -1,6 +1,6 @@
 # Valkeys Service
 
-`valkeys-service` is a small Java 21 library for coordination primitives backed by Valkey or Redis-compatible stores. It is designed as plain Java first, uses Maven for builds, and talks to GCP Memorystore for Valkey through the Lettuce synchronous API.
+`distributed-lock` is a small Java 21 library for coordination primitives backed by Valkey or Redis-compatible stores. It is designed as plain Java first, uses Maven for builds, and talks to GCP Memorystore for Valkey through the Lettuce synchronous API.
 
 GCP Memorystore for Valkey is Redis-compatible, so a standard Redis client such as Lettuce can be used for locking, counters, and expiring key/value entries.
 
@@ -16,8 +16,8 @@ GCP Memorystore for Valkey is Redis-compatible, so a standard Redis client such 
 
 ```xml
 <dependency>
-    <groupId>com.example</groupId>
-    <artifactId>valkeys-service</artifactId>
+    <groupId>com.gandalf</groupId>
+    <artifactId>distributed-lock</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
