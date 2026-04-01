@@ -5,11 +5,14 @@
 
     <groupId>com.gandalf</groupId>
     <artifactId>distributed-lock</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>distributed-lock</name>
     <description>Minimal Java coordination library backed by Valkey/Redis via Lettuce.</description>
 
     <properties>
+        <gcp.artifact.registry.location>europe-west6</gcp.artifact.registry.location>
+        <gcp.artifact.registry.project>gxperts-bls-dev</gcp.artifact.registry.project>
+        <gcp.artifact.registry.repository>distributed-lock</gcp.artifact.registry.repository>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.12.2</junit.version>
@@ -51,4 +54,21 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>artifact-registry</id>
+            <activation>
+                <property>
+                    <name>artifact.registry.location</name>
+                </property>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>artifact-registry</id>
+                    <url>artifactregistry://${gcp.artifact.registry.location}-maven.pkg.dev/${gcp.artifact.registry.project}/${gcp.artifact.registry.repository}</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 </project>

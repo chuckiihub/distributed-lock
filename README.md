@@ -18,9 +18,68 @@ GCP Memorystore for Valkey is Redis-compatible, so a standard Redis client such 
 <dependency>
     <groupId>com.gandalf</groupId>
     <artifactId>distributed-lock</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
 ```
+
+## Publish To Artifact Registry
+
+Create a standard Maven repository in `gxperts-bls-dev`:
+
+```bash
+gcloud artifacts repositories create distributed-lock \
+  --project=gxperts-bls-dev \
+  --repository-format=maven \
+  --location=europe-west6 \
+  --description="Shared Java libraries"
+```
+
+Authenticate Maven for that repository:
+
+```bash
+gcloud auth application-default login
+gcloud artifacts print-settings mvn \
+  --project=gxperts-bls-dev \
+  --repository=distributed-lock \
+  --location=europe-west6
+```
+
+Add the generated `server`, `repository`, and `profile` entries to `~/.m2/settings.xml`.
+
+This repository already includes the required Maven core extension in `.mvn/extensions.xml` for `artifactregistry://` URLs.
+
+Deploy this library:
+
+```bash
+mvn \
+  -Partifact-registry \
+  deploy
+```
+
+This repository keeps the deploy target in `pom.xml` and leaves the Artifact Registry authentication helper setup to the generated Google Cloud snippet so normal local builds are not coupled to GCP access.
+
+## Consume From Other Projects
+
+In the consuming project, add the generated Artifact Registry Maven settings from:
+
+```bash
+gcloud artifacts print-settings mvn \
+  --project=gxperts-bls-dev \
+  --repository=distributed-lock \
+  --location=europe-west6
+```
+
+Then use the dependency:
+
+```xml
+<dependency>
+    <groupId>com.gandalf</groupId>
+    <artifactId>distributed-lock</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+The runtime transitive dependency on Lettuce will be resolved through the published POM.
 
 ## Usage
 
